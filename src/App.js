@@ -84,7 +84,7 @@ class App extends Component {
                 <Route exact path="/expense" component={() => (<div>Expense</div>)} />
                 <Route exact path="/transfer" component={() => (<div>Transfer</div>)} />
                 <Route path="/accounts" component={() => (<Accounts />)} />
-                <Route exact path="/categories" component={() => (<Categories />)} />
+                <Route path="/categories" component={() => (<Categories />)} />
               </div>
           </div>
         ) : ( 

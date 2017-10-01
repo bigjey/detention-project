@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 
-import {CATEGORY_REMOVE, CATEGORY_RESTORE} from '../actions/categories';
+import {CATEGORY_ADD, CATEGORY_REMOVE, CATEGORY_RESTORE} from '../actions/categories';
 
 const defaultState = [
   {
@@ -33,6 +33,9 @@ const defaultState = [
 
 export default (prevState = defaultState, action) => {
   switch(action.type) {
+    case CATEGORY_ADD:
+      return prevState.concat(action.data)
+
     case CATEGORY_REMOVE:
       {
         const {id} = action;
@@ -47,7 +50,7 @@ export default (prevState = defaultState, action) => {
         })
       }
 
-      case CATEGORY_RESTORE:
+    case CATEGORY_RESTORE:
       {
         const {id} = action;
         return prevState.map((el) => {
