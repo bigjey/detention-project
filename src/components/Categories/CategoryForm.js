@@ -5,10 +5,21 @@ import uuid from 'uuid/v4';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormControlLabel } from 'material-ui/Form';
 
-import {addCategory} from '../../actions/categories';
+import {addCategory, editCategory} from '../../actions/categories';
 import {add} from '../../actions/flashes';
 
 class CategoryForm extends Component {
+
+  componentWillMount() {
+    if (this.props.category) {
+      this.setState({
+        fields: {
+          ...this.props.category
+        }
+      })
+    }
+  }
+
   state = {
     fields: {
       id: uuid(),
@@ -17,18 +28,28 @@ class CategoryForm extends Component {
       deleted: false
     },
     errors: {},
-    completed: false
+    completed: false,
+    newId: null
   }
 
   submitHandler = (e) => {
     e.preventDefault();
 
-    if(this.valid()) {
-      this.props.addCategory({
-        ...this.state.fields
-      });
+    const {category} = this.props;
+    let newId = null;
 
-      this.props.addFlash("Category added");
+    if(this.valid()) {
+      if (category) {
+        this.props.editCategory(category.id, this.state.fields);
+        this.props.addFlash('Category has been updated');
+      } else {
+        newId = uuid();
+        this.props.addCategory({
+          ...this.state.fields,
+          id: newId
+        });
+        this.props.addFlash('Category has been created');
+      };
 
       this.setState({
         errors: {},
@@ -66,7 +87,7 @@ class CategoryForm extends Component {
         }
       })
     };
-      
+
     return message;
   }
 
@@ -74,16 +95,17 @@ class CategoryForm extends Component {
     this.validateField(target.name, true);
   }
 
-  valid = () => {
-    const {name} = this.state.fields;
+  valid = (field = null) => {
     let valid = true;
     let errors = {};
 
-    let err = this.validateField(name);
-    if (err) {
-      errors[name] = err;
-      valid = false;
-    };
+    ['name'].forEach(field => {
+      let error = this.validateField(field);
+      if (error) {
+        errors[field] = error;
+        valid = false;
+      }
+    })
 
     this.setState({errors});
 
@@ -92,17 +114,19 @@ class CategoryForm extends Component {
 
   render() {
     const {fields: {type, name}, errors, completed} = this.state;
+    const newMode = !this.props.category;
 
     if (completed) return <Redirect to={`/categories`} />;
 
     return (
       <div>
-        <div>cat form</div>
         <form
           className="form"
           onSubmit={this.submitHandler}
         >
-          <div className="form-title">New Category</div>
+          <div className="form-title">
+            {newMode ? 'New Category' : 'Edit Category'}
+          </div>
           <div className="form-group">
             <div className="input-label">Name</div>
             <input
@@ -130,7 +154,7 @@ class CategoryForm extends Component {
           </div>
           <div className="form-group">
             <button className="btn btn-md">
-              Save
+              {newMode ? 'Add' : 'Save'}
             </button>
           </div>
         </form>
@@ -139,9 +163,18 @@ class CategoryForm extends Component {
   }
 }
 
+const stateToProps = (state, ownProps) => {
+  return {
+    category: state.categories.find(c => c.id === ownProps.id)
+  };
+}
+
 const dispatchToProps = dispatch => ({
   addCategory(data) {
     dispatch(addCategory(data));
+  },
+  editCategory(id, data) {
+    dispatch(editCategory(id, data));
   },
   addFlash(message) {
     dispatch(add({
@@ -153,4 +186,4 @@ const dispatchToProps = dispatch => ({
   }
 })
 
-export default connect(null, dispatchToProps)(CategoryForm);
+export default connect(stateToProps, dispatchToProps)(CategoryForm);

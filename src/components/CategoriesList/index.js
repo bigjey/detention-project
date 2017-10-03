@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import {connect} from 'react-redux';
 import uuid from 'uuid/v4';
 import Button from 'material-ui/Button';
 import {removeCategory, restoreCategory} from '../../actions/categories';
 import {add, hide} from '../../actions/flashes';
+
+import './style.css';
 
 class CategoriesList extends Component {
   render() {
@@ -11,9 +14,13 @@ class CategoriesList extends Component {
     return (
       <div className="categories-list">
         <ul>
-          {categories.map(el => 
-            <li>
-              {el.name} <button onClick={() => remove(el.id)}>X</button>
+          {categories.map(el =>
+            <li className="categories--item">
+              <span className="categories--item-name">{el.name}</span>
+              <div className="category-actions">
+                <button className="action-button"><Link to={`categories/${el.id}`}>Edit</Link></button>
+                <button className="action-button" onClick={() => remove(el.id)}>Remove</button>
+              </div>
             </li>
           )}
         </ul>

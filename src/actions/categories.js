@@ -1,6 +1,7 @@
 export const CATEGORY_REMOVE = 'CATEGORY_REMOVE';
 export const CATEGORY_RESTORE = 'CATEGORY_RESTORE';
 export const CATEGORY_ADD = 'CATEGORY_ADD';
+export const CATEGORY_EDIT = 'CATEGORY_EDIT';
 
 export const addCategory = (data) => {
   return {
@@ -19,5 +20,13 @@ export const restoreCategory = (id) => {
   return {
     type: CATEGORY_RESTORE,
     id
+  }
+}
+
+export const editCategory = (id, data) => {
+  return {
+    type: CATEGORY_EDIT,
+    id,
+    data
   }
 }

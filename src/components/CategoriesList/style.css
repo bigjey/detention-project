@@ -1,0 +1,50 @@
+.categories-list {
+  margin-bottom: 20px;
+}
+
+.categories--item {
+  padding: 10px 15px;
+  color: #333;
+  display: block;
+  min-height: 40px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 20px;
+}
+
+.category-actions {
+  float: right;
+  display: none;
+}
+
+.categories--item:hover .category-actions {
+  display: inline-block;
+}
+
+.action-button {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #666;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.action-button a {
+  color: #000;
+  cursor: default;
+}
+
+.action-button + .action-button {
+  margin-left: 10px;
+}
+
+.categories--item + .categories--item {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.categories--item-name {
+  display: inline-block;
+  padding: 0 20px 0 0;
+  font-weight: 500;
+}

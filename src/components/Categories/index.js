@@ -7,6 +7,8 @@ import { FormControlLabel } from 'material-ui/Form';
 import CategoriesList from '../CategoriesList';
 import CategoryForm from './CategoryForm';
 
+import './style.css';
+
 class Categories extends Component {
   state = {
     categoryType: 'income',
@@ -38,8 +40,9 @@ class Categories extends Component {
                 </div>
               )}
             />
-            
+
           <Route exact path="/categories/add" component={CategoryForm}/>
+          <Route exact path="/categories/:id" component={({match}) => <CategoryForm id={match.params.id}/>}/>
           </Switch>
         </div>
       </div>
