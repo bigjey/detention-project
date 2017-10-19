@@ -1,21 +1,13 @@
-import {ACCOUNTS_CREATE, ACCOUNTS_UPDATE} from '../actions/accounts';
+import {ACCOUNTS_ADD, ACCOUNTS_UPDATE} from '../actions/accounts';
+import {TRANSACTIONS_CREATE} from '../actions/transactions';
 
-const defaultState = [
-  {
-    id: 1,
-    balance: 0,
-    name: 'Salary'
-  }, {
-    id: 2,
-    balance: 200,
-    name: 'Savings'
-  }
-];
+const defaultState = [];
 
 export default (prevState = defaultState, action) => {
   switch(action.type){
-    case ACCOUNTS_CREATE:
-      return prevState.concat(action.data);
+
+    case ACCOUNTS_ADD:
+      return prevState.concat(action.items);
 
     case ACCOUNTS_UPDATE:
       const {id} = action;

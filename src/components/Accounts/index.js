@@ -15,7 +15,7 @@ class Accounts extends Component {
         <div className="accounts--list">
           <AccountsList>
             {(accounts) => accounts.map(a => (
-              <NavLink to={`/accounts/${a.id}`} className="dashboard-accounts--item" key={a.id}>
+              <NavLink to={`/accounts/${a._id}`} className="dashboard-accounts--item" key={a._id}>
                 <div className="dashboard-accounts--item-label">{a.name}</div>
                 <div className="dashboard-accounts--item-total">
                   <span className="dashboard-accounts--item-value">{a.balance}</span>

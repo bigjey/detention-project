@@ -1,6 +1,8 @@
-export const getAccountById = (state, id) => {
+export const getAccountById = (state, id = null) => {
+  if (!id) return null;
+
   let account = state.accounts.find(acc => {
-    return acc.id == id
+    return acc._id == id
   });
   return account;
 }

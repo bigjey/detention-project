@@ -1,19 +1,19 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const Transaction = ({id, type, account, amount, description, category, newAmount, newAccount, onRemove}) => (
+const Transaction = ({_id, type, description, category, from, to, onRemove}) => (
   <div className="dashboard-transactions--item">
     <div className="dashboard-transactions--item-text">
       <div className="dashboard-transactions--item-account">
         [
-          {account}
-          {newAccount && (
-            <span> &rarr; {newAccount}</span>
+          {to.account.name}
+          {from.account && (
+            <span> &rarr; {from.account.name}</span>
           )}
         ]
       </div>
       <div className="dashboard-transactions--item-label">
-        {category}
+        {category && category.name}
       </div>
       {description && (
         <div className="dashboard-transactions--item-description">
@@ -22,17 +22,17 @@ const Transaction = ({id, type, account, amount, description, category, newAmoun
       )}
     </div>
     <div className="dashboard-transactions--item-actions">
-      <button onClick={()=>{onRemove(id)}}>&times;</button>
+      <button onClick={()=>{onRemove(_id)}}>&times;</button>
     </div>
     <div className={
       classnames("dashboard-transactions--item-amount", `color--${type}`)
     }>
       {type === 'income' && '+'}
       {type === 'expense' && '-'}
-      {amount} $
-      {newAmount && (
-        <span> &rarr; {newAmount} $</span>
+      {from && from.account && (
+        <span>{from.amount} $ &rarr; </span>
       )}
+      {to.amount} $
     </div>
   </div>
 )

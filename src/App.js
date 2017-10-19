@@ -12,6 +12,8 @@ import SwapHoriz from 'material-ui-icons/SwapHoriz';
 import AddCircleOutline from 'material-ui-icons/AddCircleOutline';
 import RemoveCircleOutline from 'material-ui-icons/RemoveCircleOutline';
 import TrendingUp from 'material-ui-icons/TrendingUp';
+import { CircularProgress } from 'material-ui/Progress';
+import { yellow } from 'material-ui/colors';
 
 import Dashboard from './components/Dashboard';
 import Accounts from './components/Accounts';
@@ -19,6 +21,11 @@ import FlashMessages from './components/FlashMessages';
 import LoginForm from './components/LoginForm';
 import Categories from './components/Categories';
 import AuthControls from './AuthControls';
+import TransactionModal from './components/Transactions/TransactionModal';
+
+import { fetchAccounts } from './actions/accounts';
+import { fetchCategories } from './actions/categories';
+import { fetchTransactions } from './actions/transactions';
 
 const nav = [
   {
@@ -37,8 +44,21 @@ const nav = [
 ]
 
 class App extends Component {
+  state = {
+    showModal: null,
+    ready: false
+  }
+
+  componentWillMount() {
+    this.props.initApp()
+      .then(() => this.setState({ready: true}))
+  }
+
   render() {
     let { loggedin } = this.props;
+    const {showModal, ready} = this.state;
+
+    if (!ready) return <CircularProgress size={250} color={'accent'} />;
 
     return (
 
@@ -51,14 +71,15 @@ class App extends Component {
           </div>
           {loggedin && (
             <div className="app-header-nav">
+              {showModal && (<TransactionModal type={showModal} onHide={() => this.setState({showModal: null})} />)}
               <div className="app-header-nav--item">
-                <NavLink to="/income" className="app-header-nav--link"><AddCircleOutline /></NavLink>
+                <a className="app-header-nav--link" onClick={() => this.setState({showModal: 'income'})}><AddCircleOutline /></a>
               </div>
               <div className="app-header-nav--item">
-                <NavLink to="/expense" className="app-header-nav--link"><RemoveCircleOutline /></NavLink>
+                <a className="app-header-nav--link" onClick={() => this.setState({showModal: 'expense'})}><RemoveCircleOutline /></a>
               </div>
               <div className="app-header-nav--item">
-                <NavLink to="/transfer" className="app-header-nav--link"><SwapHoriz /></NavLink>
+                <a className="app-header-nav--link" onClick={() => this.setState({showModal: 'transfer'})}><SwapHoriz /></a>
               </div>
               <AuthControls />
             </div>
@@ -100,9 +121,22 @@ class App extends Component {
   }
 }
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     loggedin: state.auth.email !== null
   }
 }
-export default withRouter(connect(mapStateToProps)(App));
+
+const dispatchToProps = (dispatch) => {
+  return {
+    initApp() {
+      return Promise.all([
+        dispatch(fetchAccounts()),
+        dispatch(fetchCategories()),
+        dispatch(fetchTransactions()),
+      ]);
+    }
+  }
+}
+
+export default withRouter(connect(mapStateToProps, dispatchToProps)(App));

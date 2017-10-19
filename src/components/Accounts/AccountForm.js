@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import uuid from 'uuid/v4';
 
-import {create, update} from '../../actions/accounts';
+import {createAccount, update} from '../../actions/accounts';
 import {add} from '../../actions/flashes';
 import {getAccountById} from '../../selectors/accounts';
 
@@ -18,9 +18,7 @@ class AccountForm extends Component {
     newId: null
   }
 
-  constructor(props){
-    super(props);
-
+  componentWillMount(){
     this.populate();
   }
 
@@ -34,7 +32,9 @@ class AccountForm extends Component {
           fields[field] = account[field];
         }
       }
-      this.state.fields = fields;
+      this.setState({
+        fields: fields
+      });
     }
   }
 
@@ -62,12 +62,15 @@ class AccountForm extends Component {
         this.props.updateAccount(account.id, this.state.fields);
         this.props.addFlash('Account has been updated');
       } else {
-        newId = uuid();
-        this.props.createAccount({
-          ...this.state.fields,
-          id: newId
-        });
-        this.props.addFlash('Account has been created');
+        this.props.createAccount(this.state.fields)
+          .then(({success, item}) => {
+            if (success) {
+              this.props.addFlash('Account has been created');
+              newId = item._id;
+            } else {
+              this.props.addFlash('Something went wrong');
+            }
+          })
       };
 
       this.setState({
@@ -108,12 +111,12 @@ class AccountForm extends Component {
     return message;
   }
 
-  valid = (field = null) => {
+  valid = () => {
     const {name, balance} = this.state.fields;
     let valid = true;
     let errors = {};
 
-    ['name', 'balance'].forEach(field => {
+    Object.keys(this.state.fields).forEach(field => {
       let error = this.validateField(field);
       if (error) {
         errors[field] = error;
@@ -141,8 +144,9 @@ class AccountForm extends Component {
         </div>
         <div className="form-group">
           <div className="input-label">Name</div>
-          <input name="name" type="text" value={name} 
-            onChange={this.inputHandler} 
+          <input name="name" type="text"
+            value={name}
+            onChange={this.inputHandler}
             onBlur={this.fieldBlurHandler}
           />
           {errors['name'] && (
@@ -151,10 +155,9 @@ class AccountForm extends Component {
         </div>
         <div className="form-group">
           <div className="input-label">Balance</div>
-          <input name="balance" type="number" value={balance} 
-            onChange={this.inputHandler} 
-            onFocus={(e) => {
-            }} 
+          <input name="balance" type="number"
+            value={balance}
+            onChange={this.inputHandler}
             onBlur={this.fieldBlurHandler}
           />
           {errors['balance'] && (
@@ -178,7 +181,7 @@ const stateToProps = (state, ownProps) => ({
 
 const dispatchToProps = dispatch => ({
   createAccount(data) {
-    dispatch(create(data));
+    return dispatch(createAccount(data));
   },
   updateAccount(id, data) {
     dispatch(update(id, data));

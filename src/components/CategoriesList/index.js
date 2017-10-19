@@ -15,11 +15,11 @@ class CategoriesList extends Component {
       <div className="categories-list">
         <ul>
           {categories.map(el =>
-            <li className="categories--item">
+            <li className="categories--item" key={el._id}>
               <span className="categories--item-name">{el.name}</span>
               <div className="category-actions">
-                <button className="action-button"><Link to={`categories/${el.id}`}>Edit</Link></button>
-                <button className="action-button" onClick={() => remove(el.id)}>Remove</button>
+                <button className="action-button"><Link to={`categories/${el._id}`}>Edit</Link></button>
+                <button className="action-button" onClick={() => remove(el._id)}>Remove</button>
               </div>
             </li>
           )}

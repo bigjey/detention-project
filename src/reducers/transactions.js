@@ -1,38 +1,14 @@
 import uuid from 'uuid/v4';
 
-import {TRANSACTIONS_DELETE, TRANSACTIONS_RESTORE} from '../actions/transactions';
+import {TRANSACTIONS_ADD, TRANSACTIONS_DELETE, TRANSACTIONS_RESTORE} from '../actions/transactions';
 
-const defaultState = [
-  {
-    id: uuid(),
-    type: 'income',
-    amount: 4000,
-    account: 'Salary',
-    category: 'Monthly income',
-    description: 'Milk, bread, candies',
-    deleted: false
-  }, {
-    id: uuid(),
-    type: 'expense',
-    amount: 33.15,
-    account: 'Salary',
-    category: 'Groceries',
-    description: 'Milk, bread, candies',
-    deleted: false
-  }, {
-    id: uuid(),
-    type: 'transfer',
-    amount: 33.15,
-    newAmount: 133.15,
-    account: 'Salary',
-    newAccount: 'Savings',
-    category: 'New car',
-    deleted: false
-  }
-]
+const defaultState = []
 
 export default (prevState = defaultState, action) => {
   switch(action.type){
+
+    case TRANSACTIONS_ADD:
+      return prevState.concat(action.items);
 
     case TRANSACTIONS_DELETE:
       const {id} = action;

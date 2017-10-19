@@ -4,8 +4,9 @@ import {Redirect} from 'react-router-dom';
 import uuid from 'uuid/v4';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormControlLabel } from 'material-ui/Form';
+import { CircularProgress } from 'material-ui/Progress';
 
-import {addCategory, editCategory} from '../../actions/categories';
+import {createCategory, editCategory} from '../../actions/categories';
 import {add} from '../../actions/flashes';
 
 class CategoryForm extends Component {
@@ -22,39 +23,45 @@ class CategoryForm extends Component {
 
   state = {
     fields: {
-      id: uuid(),
       type: 'income',
-      name: '',
-      deleted: false
+      name: ''
     },
     errors: {},
     completed: false,
-    newId: null
+    loading: false
   }
 
   submitHandler = (e) => {
     e.preventDefault();
 
     const {category} = this.props;
-    let newId = null;
 
     if(this.valid()) {
       if (category) {
         this.props.editCategory(category.id, this.state.fields);
         this.props.addFlash('Category has been updated');
       } else {
-        newId = uuid();
-        this.props.addCategory({
-          ...this.state.fields,
-          id: newId
+        this.setState({
+          loading: true
         });
-        this.props.addFlash('Category has been created');
+        this.props.create(this.state.fields)
+          .then(({success, item, errors}) => {
+            if (success) {
+              this.props.addFlash(`Category ${item.name} has been created`);
+              this.setState({
+                loading: false,
+                completed: true,
+                errors: {}
+              });
+            } else {
+              let newErrors = Object.keys(errors.errors).reduce((err, field) => (err[field] = errors.errors[field].message, err), {});
+              this.setState({
+                loading: false,
+                errors: newErrors
+              });
+            }
+          });
       };
-
-      this.setState({
-        errors: {},
-        completed: true
-      });
     }
   }
 
@@ -113,10 +120,11 @@ class CategoryForm extends Component {
   }
 
   render() {
-    const {fields: {type, name}, errors, completed} = this.state;
+    const {fields: {type, name}, errors, completed, loading} = this.state;
     const newMode = !this.props.category;
 
     if (completed) return <Redirect to={`/categories`} />;
+
 
     return (
       <div>
@@ -151,11 +159,15 @@ class CategoryForm extends Component {
               <FormControlLabel value="income" control={<Radio />} label="Income" />
               <FormControlLabel value="expense" control={<Radio />} label="Expense" />
             </RadioGroup>
+            {errors['type'] && (
+              <div className="input-error">{errors['type']}</div>
+            )}
           </div>
           <div className="form-group">
             <button className="btn btn-md">
               {newMode ? 'Add' : 'Save'}
             </button>
+            {loading && (<CircularProgress />)}
           </div>
         </form>
       </div>
@@ -165,13 +177,13 @@ class CategoryForm extends Component {
 
 const stateToProps = (state, ownProps) => {
   return {
-    category: state.categories.find(c => c.id === ownProps.id)
+    category: state.categories.find(c => c._id === ownProps.id)
   };
 }
 
 const dispatchToProps = dispatch => ({
-  addCategory(data) {
-    dispatch(addCategory(data));
+  create(data) {
+    return dispatch(createCategory(data));
   },
   editCategory(id, data) {
     dispatch(editCategory(id, data));

@@ -10,6 +10,10 @@
 }
 
 
+.app--loading {
+  font-size: 50px;
+}
+
 .app-header {
   flex: 0 0 auto;
   background: #4CAF50;
@@ -50,6 +54,7 @@
   padding: 10px 20px;
   background: #388E3C;
   color: #fff;
+  cursor: pointer;
 }
 .app-header-nav--link svg {
   flex: 1 auto;
