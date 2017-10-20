@@ -1,5 +1,120 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  outline: none;
+}
+
+html, body {
+  height: 100%;
+  font: normal 300 14px 'Roboto', Arial, sans-serif;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  padding: 10px;
+}
+
+.widget {
+  display: flex;
+  flex-direction: column;
+}
+.widget + .widget {
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+.widget--title {
+  padding: 10px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.widget--content {
+  overflow-y: auto;
+}
+
+.color--income {
+  color: #4CAF50;
+}
+.color--expense {
+  color: #F44336;
+}
+.color--transfer {
+  color: #2196F3;
+}
+
+.btn {
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  background: #4CAF50;
+  padding: 8px 15px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #fff;
+  border-radius: 3px;
+}
+.btn-md {
+  font-size: 20px;
+  padding: 10px 20px;
+}
+.btn:hover {
+  background: #2E7D32;
+}
+
+
+.form {
+  padding: 30px;
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  box-shadow: 0 5px 30px rgba(0,0,0,.1);
+}
+.form-title {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+.form-group + .form-group {
+  padding-top: 20px;
+}
+.form .input-label {
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+.form input[type=text],
+.form input[type=password],
+.form input[type=email],
+.form select,
+.form input[type=number] {
+  display: block;
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid #ddd;
+  font-size: 20px;
+  border-radius: 3px;
+}
+
+.form input[type=text]:focus,
+.form input[type=password]:focus,
+.form input[type=email]:focus,
+.form select:focus,
+.form input[type=number]:focus {
+  box-shadow: 0 0 5px #AEEA00;
+}
+
+.form .input-error {
+  padding-top: 3px;
+  font-size: 12px;
+  color: #F44336;
 }

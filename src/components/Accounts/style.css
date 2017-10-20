@@ -1,0 +1,23 @@
+.accounts {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.accounts--list {
+  flex: 0 0 160px;
+}
+.accounts--content {
+  flex: 1 1 auto;
+  height: 100%;
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accounts--hero {
+  font-size: 24px;
+  padding: 40px;
+  text-align: center;
+}
