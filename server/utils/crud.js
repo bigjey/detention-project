@@ -1,6 +1,13 @@
-const create = model => (req, res) => {
+const create = (model, modelSettings) => (req, res) => {
   model.create(req.body)
-    .then(item => res.json({success: true, item}))
+    .then(item => {
+      if (modelSettings.populate) {
+        model.populate(item, modelSettings.populate.join(' '))
+          .then(item => res.json({success: true, item}))
+      } else {
+        res.json({success: true, item})
+      }
+    })
     .catch(e =>  res.json({success: false, e}))
 }
 
@@ -20,6 +27,6 @@ const getAll = (model, modelSettings) => (req, res) => {
 module.exports = (model, modelSettings = {}) => {
   return {
     getAll: getAll(model, modelSettings),
-    create: create(model)
+    create: create(model, modelSettings)
   }
 }

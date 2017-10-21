@@ -65,7 +65,6 @@ class TransactionForm extends Component {
     e.preventDefault();
     
     if (this.props.type === 'transfer') {
-      // debugger;
 
       if (this.state.fields.fromAccount === this.state.fields.toAccount) {
 
@@ -123,24 +122,6 @@ class TransactionForm extends Component {
           )}
         </div>
 
-        {type !== "transfer" && (
-          <div className="form-group">
-            <div className="input-label">category</div>
-            <select
-              name="category"
-              value={category}
-              onChange={this.inputHandler}
-            >
-              {this.props.categories.map(c => (
-                <option value={c._id}>{c.name}</option>
-              ))}
-            </select>
-            {errors["category"] && (
-              <div className="input-error">{errors["category"]}</div>
-            )}
-          </div>
-        )}
-
         { type !== "income" && (
 
           <div className="form-group">
@@ -174,6 +155,24 @@ class TransactionForm extends Component {
             </select>
             {errors["toAccount"] && (
               <div className="input-error">{errors["toAccount"]}</div>
+            )}
+          </div>
+        )}
+
+        {type !== "transfer" && (
+          <div className="form-group">
+            <div className="input-label">category</div>
+            <select
+              name="category"
+              value={category}
+              onChange={this.inputHandler}
+            >
+              {this.props.categories.map(c => (
+                <option value={c._id}>{c.name}</option>
+              ))}
+            </select>
+            {errors["category"] && (
+              <div className="input-error">{errors["category"]}</div>
             )}
           </div>
         )}

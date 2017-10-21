@@ -1,5 +1,8 @@
 import {ACCOUNTS_ADD, ACCOUNTS_UPDATE} from '../actions/accounts';
 import {TRANSACTIONS_CREATE} from '../actions/transactions';
+import {createStore, applyMiddleware, compose} from 'redux';
+import thunk from 'redux-thunk'
+
 
 const defaultState = [];
 
