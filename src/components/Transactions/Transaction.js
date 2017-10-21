@@ -1,14 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const Transaction = ({_id, type, description, category, from, to, onRemove}) => (
+const Transaction = ({_id, type, description, amount, category, fromAccount, toAccount, onRemove}) => (
   <div className="dashboard-transactions--item">
     <div className="dashboard-transactions--item-text">
       <div className="dashboard-transactions--item-account">
         [
-          {to.account.name}
-          {from.account && (
-            <span> &rarr; {from.account.name}</span>
+          {(fromAccount || toAccount).name}
+          {fromAccount && toAccount && (
+            <span> &rarr; {toAccount.name}</span>
           )}
         ]
       </div>
@@ -29,10 +29,8 @@ const Transaction = ({_id, type, description, category, from, to, onRemove}) => 
     }>
       {type === 'income' && '+'}
       {type === 'expense' && '-'}
-      {from && from.account && (
-        <span>{from.amount} $ &rarr; </span>
-      )}
-      {to.amount} $
+      
+     {amount} $
     </div>
   </div>
 )
