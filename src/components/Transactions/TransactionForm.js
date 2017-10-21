@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuid from "uuid/v4";
+import moment from 'moment';
 
 import { create } from "../../actions/transactions";
 import { add } from "../../actions/flashes";
@@ -13,7 +14,8 @@ class TransactionForm extends Component {
       amount: 0,
       fromAccount: null,
       toAccount: null,
-      description: ""
+      description: "",
+      created: Date.now()
     },
     errors: {},
     completed: false
@@ -100,7 +102,7 @@ class TransactionForm extends Component {
     const { type } = this.props;
 
     const {
-      fields: { category, amount, toAccount, fromAccount, description },
+      fields: { category, amount, toAccount, fromAccount, description, created },
       errors,
       completed
     } = this.state;
@@ -187,6 +189,19 @@ class TransactionForm extends Component {
           />
           {errors["description"] && (
             <div className="input-error">{errors["description"]}</div>
+          )}
+        </div>
+
+        <div className="form-group">
+          <div className="input-label">date</div>
+          <input
+            name="created"
+            type="date"
+            value={moment(created).format('YYYY-MM-DD')}
+            onChange={this.inputHandler}
+          />
+          {errors["created"] && (
+            <div className="input-error">{errors["created"]}</div>
           )}
         </div>
 

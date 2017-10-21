@@ -25,7 +25,9 @@ const Transactions = ({transactions, removeTransaction}) => (
 
 
 const stateToProps = state => ({
-  transactions: state.transactions.filter(t => !t.deleted).reverse()
+  transactions: state.transactions.filter(t => !t.deleted).sort((a, b) => {
+    return new Date(b.created) - new Date(a.created)
+  })
 })
 
 const dispatchToProps = dispatch => ({
