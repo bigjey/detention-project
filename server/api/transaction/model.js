@@ -10,35 +10,35 @@ var transaction = new Schema({
     enum: transactionTypes,
     default: 'income'
   },
-  from: {
-    amount: {
-      type: Number,
-      default: 0,
-      require: true
-    },
-    account: {
-      type: Schema.Types.ObjectId,
-      ref: 'Account',
-      default: null
+  amount: {
+    type: Number,
+    default: 0,
+    require: true
+  },
+
+  fromAccount: {
+    type: Schema.Types.ObjectId,
+    ref: 'Account',
+    default: null,
+    required: function() {
+      return this.type !== 'income'
     }
   },
-  to: {
-    amount: {
-      type: Number,
-      default: 0,
-      require: true
-    },
-    account: {
-      type: Schema.Types.ObjectId,
-      ref: 'Account',
-      default: null,
-      required: true
+  toAccount: {
+    type: Schema.Types.ObjectId,
+    ref: 'Account',
+    default: null,
+    required: function() {
+      return this.type !== 'expense' 
     }
   },
   category: {
     type: Schema.Types.ObjectId,
     ref: 'Category',
-    default: null
+    default: null,
+    required: function() {
+      return this.type !== 'transfer'
+    }
   },
   description: {
     type: String

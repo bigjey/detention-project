@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const transactionModel = require('./model');
 const modelSettings = {
-  populate: ['to.account', 'from.account', 'category']
+  populate: ['toAccount', 'fromAccount', 'category']
 }
 const controller = require('../../utils/crud')(transactionModel, modelSettings);
 
