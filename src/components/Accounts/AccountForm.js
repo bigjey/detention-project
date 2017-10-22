@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import uuid from 'uuid/v4';
 
-import {createAccount, update} from '../../actions/accounts';
+import {createAccount, updateAccount} from '../../actions/accounts';
 import {add} from '../../actions/flashes';
 import {getAccountById} from '../../selectors/accounts';
 
@@ -59,8 +59,19 @@ class AccountForm extends Component {
 
     if (this.valid()) {
       if (account) {
-        this.props.updateAccount(account.id, this.state.fields);
-        this.props.addFlash('Account has been updated');
+        this.props.updateAccount(account._id, this.state.fields)
+          .then(({success, item}) => {
+            if (success) {
+              this.props.addFlash('Account has been update');
+            } else {
+              this.props.addFlash('Something went wrong');
+            }
+
+            this.setState({
+              erorrs: {},
+              completed: true
+            })
+          })
       } else {
         this.props.createAccount(this.state.fields)
           .then(({success, item}) => {
@@ -70,14 +81,14 @@ class AccountForm extends Component {
             } else {
               this.props.addFlash('Something went wrong');
             }
+
+            this.setState({
+              erorrs: {},
+              completed: true,
+              newId
+            })
           })
       };
-
-      this.setState({
-        erorrs: {},
-        completed: true,
-        newId
-      })
     }
   }
 
@@ -184,7 +195,7 @@ const dispatchToProps = dispatch => ({
     return dispatch(createAccount(data));
   },
   updateAccount(id, data) {
-    dispatch(update(id, data));
+    return dispatch(updateAccount(id, data));
   },
   addFlash(message) {
     dispatch(add({

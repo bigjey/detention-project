@@ -27,10 +27,22 @@ export const createAccount = (data) => dispatch => {
     })
 }
 
+export const updateAccount = (id, data) => dispatch => {
+  return axios.put(`http://localhost:1212/api/account/${id}`, data)
+    .then(({data}) => {
+      if (data.success){
+        dispatch(update(id, data.item));
+      }
+
+      return data;
+    })
+}
+
 export const add = (items) => ({
   type: ACCOUNTS_ADD,
   items
 })
+
 export const update = (id, data) => ({
   type: ACCOUNTS_UPDATE,
   id,

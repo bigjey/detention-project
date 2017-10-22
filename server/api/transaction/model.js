@@ -15,7 +15,6 @@ var transaction = new Schema({
     default: 0,
     require: true
   },
-
   fromAccount: {
     type: Schema.Types.ObjectId,
     ref: 'Account',
