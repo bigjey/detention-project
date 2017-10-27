@@ -12,32 +12,41 @@ class Accounts extends Component {
   render(){
     return (
       <div className="accounts">
-        <div className="accounts--list">
-          <AccountsList>
-            {(accounts) => accounts.map(a => (
-              <NavLink to={`/accounts/${a._id}`} className="dashboard-accounts--item" key={a._id}>
-                <div className="dashboard-accounts--item-label">{a.name}</div>
-                <div className="dashboard-accounts--item-total">
-                  <span className="dashboard-accounts--item-value">{a.balance}</span>
-                  <span className="dashboard-accounts--item-currency">$</span>
-                </div>
-              </NavLink>
-            ))}
-          </AccountsList>
-          <Route 
-            exact 
-            path="/accounts" 
-            children={({match}) => 
-              match 
-                ? null 
-                : (<div style={{
-                    padding: 10
-                  }}>
-                    <Link to="/accounts/add" className="btn">Add Account</Link>
-                  </div>)
-            }
-          />
-        </div>
+        <AccountsList>
+          {(accounts) => (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%'
+            }}>
+            <div className="accounts--list">
+              {accounts.map(a => (
+                <NavLink to={`/accounts/${a._id}`} className="dashboard-accounts--item" key={a._id}>
+                  <div className="dashboard-accounts--item-label">{a.name}</div>
+                  <div className="dashboard-accounts--item-total">
+                    <span className="dashboard-accounts--item-value">{a.balance}</span>
+                    <span className="dashboard-accounts--item-currency">$</span>
+                  </div>
+                </NavLink>
+              ))}
+            </div>
+            <Route 
+              exact 
+              path="/accounts" 
+              children={({match}) => 
+                match 
+                  ? null 
+                  : (<div style={{
+                      padding: 10,
+                      textAlign: 'center'
+                    }}>
+                      <Link to="/accounts/add" className="btn">Add Account</Link>
+                    </div>)
+                }
+              />
+            </div>
+          )}
+        </AccountsList>
         <div className="accounts--content">
           <Switch>
             <Route exact path="/accounts/add" component={AccountForm}/>

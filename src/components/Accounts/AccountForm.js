@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import uuid from 'uuid/v4';
 
-import {createAccount, updateAccount} from '../../actions/accounts';
+import {
+  createAccount,
+  updateAccount,
+  deleteAccount
+} from '../../actions/accounts';
 import {add} from '../../actions/flashes';
 import {getAccountById} from '../../selectors/accounts';
+
 
 class AccountForm extends Component {
   state = {
@@ -19,6 +24,10 @@ class AccountForm extends Component {
   }
 
   componentWillMount(){
+    if (this.props.accountId && !this.props.account) {
+      this.props.history.replace('/accounts');
+      this.props.addFlash('Could not find account with this id, redirecting to list');
+    }
     this.populate();
   }
 
@@ -36,6 +45,18 @@ class AccountForm extends Component {
         fields: fields
       });
     }
+  }
+
+  delete = (id) => {
+    this.props.deleteAccount(id)
+      .then(({success}) => {
+        if (success) {
+          this.props.addFlash('Account has been deleted');
+          this.props.history.push('/accounts');
+        } else {
+          this.props.addFlash('Something went wrong');
+        }
+      })
   }
 
   inputHandler = ({target}) => {
@@ -179,6 +200,16 @@ class AccountForm extends Component {
           <button className="btn btn-md">
             {newMode ? 'Add' : 'Save'}
           </button>
+          {!newMode && (
+            <button
+              type="button"
+              style={{marginLeft: 50}}
+              className="btn btn-sm btn-danger"
+              onClick={() => this.delete(account._id)}
+            >
+              delete
+            </button>
+          )}
         </div>
       </form>
     );
@@ -197,6 +228,9 @@ const dispatchToProps = dispatch => ({
   updateAccount(id, data) {
     return dispatch(updateAccount(id, data));
   },
+  deleteAccount(id) {
+    return dispatch(deleteAccount(id))
+  },
   addFlash(message) {
     dispatch(add({
       id: uuid(),
@@ -207,4 +241,4 @@ const dispatchToProps = dispatch => ({
   }
 })
 
-export default connect(stateToProps, dispatchToProps)(AccountForm);
+export default withRouter(connect(stateToProps, dispatchToProps)(AccountForm));

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 
-import { authenticate } from '../../actions/auth';
+import { register } from '../../actions/auth';
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
   state = {
     fields: {
       email: '',
-      password: ''
+      password: '',
+      passwordRepeat: ''
     },
     errors: {}
   }
@@ -30,14 +31,15 @@ class LoginForm extends Component {
     e.preventDefault();
 
     if (this.valid()) {
-      this.props.login(this.state.fields)
+      this.props.register(this.state.fields)
         .then(({success, err}) => {
           if (success) {
-            // this.props.history.push('/login');
+            this.props.history.push('/login');
           } else {
             this.setState({errors: err})
           }
         })
+        .catch(e => console.log(e));
     }
   }
 
@@ -69,6 +71,14 @@ class LoginForm extends Component {
     let valid = true;
     let errors = {};
 
+    Object.keys(this.state.fields).forEach(field => {
+      let error = this.validateField(field);
+      if (error) {
+        errors[field] = error;
+        valid = false;
+      }
+    })
+
     this.setState({errors});
 
     return valid;
@@ -80,9 +90,9 @@ class LoginForm extends Component {
     return (
       <div className="login-form">
         <form className="form" onSubmit={this.submitHandler}>
-          <small><Link to="/register">register</Link></small>
+          <small><Link to="/login">Login</Link></small>
           <div className="form-title">
-            Log In
+            Register
           </div>
           <div className="form-group">
             <div className="input-label">Email</div>
@@ -113,8 +123,22 @@ class LoginForm extends Component {
             )}
           </div>
           <div className="form-group">
+            <div className="input-label">Password again</div>
+            <input
+              name="passwordRepeat"
+              type="password"
+              value={passwordRepeat}
+              required
+              onChange={this.inputHandler}
+              onBlur={this.fieldBlurHandler}
+            />
+            {errors['passwordRepeat'] && (
+              <div className="input-error">{errors['passwordRepeat']}</div>
+            )}
+          </div>
+          <div className="form-group">
             <button type="submit" className="btn btn-md">
-              Log In
+              Register
             </button>
           </div>
         </form>
@@ -126,9 +150,9 @@ class LoginForm extends Component {
 }
 
 const dispatchToPros = (dispatch) => ({
-  login(data) {
-    return dispatch(authenticate(data));
+  register(data) {
+    return dispatch(register(data));
   }
 })
 
-export default withRouter(connect(null, dispatchToPros)(LoginForm));
+export default withRouter(connect(null, dispatchToPros)(RegisterForm));

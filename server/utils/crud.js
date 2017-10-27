@@ -1,5 +1,5 @@
 const preloadById = (model, modelSettings) => (req, res, next, id) => {
-  model.findById(id)
+  model.findOne({_id: id, userId: req.userId})
     .then(item => {
       req.itemFromMiddleware = item;
       next();
@@ -8,7 +8,7 @@ const preloadById = (model, modelSettings) => (req, res, next, id) => {
 }
 
 const create = (model, modelSettings) => (req, res) => {
-  model.create(req.body)
+  model.create(Object.assign({}, req.body, {userId: req.userId}))
     .then(item => {
       if (modelSettings.populate) {
         model.populate(item, modelSettings.populate.join(' '))
@@ -21,7 +21,7 @@ const create = (model, modelSettings) => (req, res) => {
 }
 
 const getAll = (model, modelSettings) => (req, res) => {
-  let promise = model.find({})
+  let promise = model.find({userId: req.userId})
 
   if (modelSettings.populate) {
     modelSettings.populate.forEach(path => {

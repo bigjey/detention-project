@@ -4,6 +4,10 @@ var Schema = mongoose.Schema;
 const transactionTypes = ['income', 'expense', 'transfer'];
 
 var transaction = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   type: {
     type: String,
     require: true,

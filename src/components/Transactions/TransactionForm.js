@@ -209,7 +209,11 @@ class TransactionForm extends Component {
           <button className="btn btn-md">Add</button>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           {this.props.hideModal && (
-            <button className="btn" onClick={this.props.hideModal}>
+            <button
+              className="btn"
+              onClick={this.props.hideModal}
+              type="button"
+            >
               Cancel
             </button>
           )}

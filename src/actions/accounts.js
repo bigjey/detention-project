@@ -3,9 +3,10 @@ import axios from 'axios';
 
 export const ACCOUNTS_ADD = 'ACCOUNTS_ADD';
 export const ACCOUNTS_UPDATE = 'ACCOUNTS_UPDATE';
+export const ACCOUNTS_REMOVE = 'ACCOUNTS_REMOVE';
 
 
-export const fetchAccounts = () => dispatch => {
+export const fetchAccounts = () => (dispatch, getState) => {
   return axios.get(`http://localhost:1212/api/account`)
     .then(({data}) => {
       if (data.success){
@@ -38,6 +39,17 @@ export const updateAccount = (id, data) => dispatch => {
     })
 }
 
+export const deleteAccount = (id) => dispatch => {
+  return axios.delete(`http://localhost:1212/api/account/${id}`)
+    .then(({data}) => {
+      if (data.success){
+        dispatch(remove(id));
+      }
+
+      return data;
+    })
+}
+
 export const add = (items) => ({
   type: ACCOUNTS_ADD,
   items
@@ -47,4 +59,9 @@ export const update = (id, data) => ({
   type: ACCOUNTS_UPDATE,
   id,
   data
+})
+
+export const remove = (id) => ({
+  type: ACCOUNTS_REMOVE,
+  id
 })

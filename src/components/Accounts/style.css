@@ -5,7 +5,9 @@
 }
 
 .accounts--list {
-  flex: 0 0 160px;
+  flex: 1 1 160px;
+  height: 100%;
+  overflow: auto;
 }
 .accounts--content {
   flex: 1 1 auto;

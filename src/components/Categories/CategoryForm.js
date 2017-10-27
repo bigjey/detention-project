@@ -54,10 +54,8 @@ class CategoryForm extends Component {
                 errors: {}
               });
             } else {
-              let newErrors = Object.keys(errors.errors).reduce((err, field) => (err[field] = errors.errors[field].message, err), {});
               this.setState({
-                loading: false,
-                errors: newErrors
+                loading: false
               });
             }
           });

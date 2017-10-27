@@ -2,7 +2,7 @@ import './App.css';
 
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Route, NavLink, withRouter } from 'react-router-dom';
+import { Route, NavLink, withRouter, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Dvr from 'material-ui-icons/Dvr';
@@ -13,19 +13,18 @@ import AddCircleOutline from 'material-ui-icons/AddCircleOutline';
 import RemoveCircleOutline from 'material-ui-icons/RemoveCircleOutline';
 import TrendingUp from 'material-ui-icons/TrendingUp';
 import { CircularProgress } from 'material-ui/Progress';
-import { yellow } from 'material-ui/colors';
 
 import Dashboard from './components/Dashboard';
 import Accounts from './components/Accounts';
 import FlashMessages from './components/FlashMessages';
 import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
 import Categories from './components/Categories';
 import AuthControls from './AuthControls';
 import TransactionModal from './components/Transactions/TransactionModal';
 
-import { fetchAccounts } from './actions/accounts';
-import { fetchCategories } from './actions/categories';
-import { fetchTransactions } from './actions/transactions';
+import { set } from './actions/app';
+import { validateToken } from './actions/auth';
 
 const nav = [
   {
@@ -44,21 +43,15 @@ const nav = [
 ]
 
 class App extends Component {
-  state = {
-    showModal: null,
-    ready: false
-  }
 
   componentWillMount() {
-    this.props.initApp()
-      .then(() => this.setState({ready: true}))
+    this.props.validateToken()
   }
 
   render() {
-    let { loggedin } = this.props;
-    const {showModal, ready} = this.state;
+    let { showTransactionModal, loggedin, ready } = this.props;
 
-    if (!ready) return <CircularProgress size={250} color={'accent'} />;
+    if (loggedin && !ready) return <CircularProgress size={250} color={'accent'} />;
 
     return (
 
@@ -71,15 +64,30 @@ class App extends Component {
           </div>
           {loggedin && (
             <div className="app-header-nav">
-              {showModal && (<TransactionModal type={showModal} onHide={() => this.setState({showModal: null})} />)}
+              {showTransactionModal && (<TransactionModal type={showTransactionModal} onHide={() => this.setState({showTransactionModal: null})} />)}
               <div className="app-header-nav--item">
-                <a className="app-header-nav--link" onClick={() => this.setState({showModal: 'income'})}><AddCircleOutline /></a>
+                <a
+                  className="app-header-nav--link"
+                  onClick={() => this.props.changeTransactionModalType('income')}
+                >
+                  <AddCircleOutline />
+                </a>
               </div>
               <div className="app-header-nav--item">
-                <a className="app-header-nav--link" onClick={() => this.setState({showModal: 'expense'})}><RemoveCircleOutline /></a>
+                <a
+                  className="app-header-nav--link"
+                  onClick={() => this.props.changeTransactionModalType('expense')}
+                >
+                  <RemoveCircleOutline />
+                </a>
               </div>
               <div className="app-header-nav--item">
-                <a className="app-header-nav--link" onClick={() => this.setState({showModal: 'transfer'})}><SwapHoriz /></a>
+                <a
+                  className="app-header-nav--link"
+                  onClick={() => this.props.changeTransactionModalType('transfer')}
+                >
+                  <SwapHoriz />
+                </a>
               </div>
               <AuthControls />
             </div>
@@ -101,16 +109,18 @@ class App extends Component {
 
               <div className="app-content">
                 <Route exact path="/" component={() => (<Dashboard />)} />
-                <Route exact path="/income" component={() => (<div>Income</div>)} />
-                <Route exact path="/expense" component={() => (<div>Expense</div>)} />
-                <Route exact path="/transfer" component={() => (<div>Transfer</div>)} />
                 <Route path="/accounts" component={() => (<Accounts />)} />
                 <Route path="/categories" component={() => (<Categories />)} />
               </div>
           </div>
         ) : ( 
           <div className="app-body">
-            <LoginForm />
+            <Switch>
+              <Route exact path="/login" component={LoginForm} />
+              <Route exact path="/register" component={RegisterForm} />
+
+              <Redirect to="/login" />
+            </Switch>
           </div>
         )}
 
@@ -123,18 +133,19 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggedin: state.auth.email !== null
+    loggedin: state.auth.loggedIn,
+    ready: state.app.ready,
+    showTransactionModal: state.app.showTransactionModal
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return {
-    initApp() {
-      return Promise.all([
-        dispatch(fetchAccounts()),
-        dispatch(fetchCategories()),
-        dispatch(fetchTransactions()),
-      ]);
+    validateToken() {
+      return dispatch(validateToken())
+    },
+    changeTransactionModalType(type) {
+      dispatch(set('showTransactionModal', type))
     }
   }
 }

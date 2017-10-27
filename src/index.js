@@ -23,6 +23,7 @@ const composeEnhancers = typeof window === 'object' && devTools
 const enhancer = composeEnhancers(
   applyMiddleware(thunk)
 );
+
 const store = createStore(reducer, enhancer);
 
 ReactDOM.render(
