@@ -28,10 +28,11 @@
     "uuid": "^3.1.0"
   },
   "scripts": {
+    "babel-node": "babel-node --presets=latest",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "serve": "nodemon server"
+    "serve": "nodemon --exec npm run babel-node -- ./server"
   }
 }

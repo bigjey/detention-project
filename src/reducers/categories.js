@@ -1,11 +1,20 @@
 import uuid from 'uuid/v4';
 
-import {CATEGORY_ADD, CATEGORY_REMOVE, CATEGORY_RESTORE, CATEGORY_EDIT} from '../actions/categories';
+import {
+  CATEGORY_ADD,
+  CATEGORY_SET,
+  CATEGORY_REMOVE,
+  CATEGORY_RESTORE,
+  CATEGORY_EDIT
+} from '../actions/categories';
 
 const defaultState = [];
 
 export default (prevState = defaultState, action) => {
   switch(action.type) {
+    case CATEGORY_SET:
+      return action.items;
+
     case CATEGORY_ADD:
       return prevState.concat(action.items)
 

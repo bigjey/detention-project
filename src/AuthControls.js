@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { logout } from './actions/auth';
+import { set } from './actions/app';
 import ExitToApp from 'material-ui-icons/ExitToApp';
 
 let mapStateToProps = state => {
@@ -11,7 +12,7 @@ let mapStateToProps = state => {
 }
 
 const AuthControls = ({dispatch, email}) => (
-  <div className="app-header--user" onClick={ () => dispatch(logout()) }>
+  <div className="app-header--user" onClick={() => dispatch(logout())}>
     <span>{ email }</span>
     <ExitToApp />
   </div>

@@ -5,6 +5,7 @@ export const CATEGORY_FETCH_ALL = 'CATEGORY_FETCH_ALL';
 export const CATEGORY_REMOVE = 'CATEGORY_REMOVE';
 export const CATEGORY_RESTORE = 'CATEGORY_RESTORE';
 export const CATEGORY_ADD = 'CATEGORY_ADD';
+export const CATEGORY_SET = 'CATEGORY_SET';
 export const CATEGORY_EDIT = 'CATEGORY_EDIT';
 export const CATEGORY_FORM_ERROR = 'CATEGORY_FORM_ERROR';
 export const CATEGORY_FORM_LOADER = 'CATEGORY_FORM_LOADER';
@@ -14,7 +15,7 @@ export const fetchCategories = () => (dispatch) => {
   return axios.get(`http://localhost:1212/api/category`)
     .then((response) => {
       if (response.data.success) {
-        dispatch(addCategories(response.data.items))
+        dispatch(setCategories(response.data.items))
       }
       return response
     })
@@ -30,6 +31,11 @@ export const createCategory = (data) => (dispatch) => {
       return data;
     })
 }
+
+const setCategories = (items) => ({
+  type: CATEGORY_SET,
+  items
+})
 
 const addCategories = (items) => ({
   type: CATEGORY_ADD,

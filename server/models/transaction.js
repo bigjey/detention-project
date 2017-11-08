@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+const Account = mongoose.model('Account');
+
 const transactionTypes = ['income', 'expense', 'transfer'];
 
-var transaction = new Schema({
+var Transaction = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -58,7 +60,35 @@ var transaction = new Schema({
   collection: 'transactions'
 });
 
-module.exports = mongoose.model('Transaction', transaction)
+Transaction.methods.apply = function(dx = 1) {
+  const promises = [];
+
+  if (this.toAccount) {
+    promises.push(Account.findById(this.toAccount)
+      .then((account) => {
+        account.balance += this.amount * dx;
+        return account.save();
+      })
+    )
+  }
+
+  if (this.fromAccount) {
+    promises.push(Account.findById(this.fromAccount)
+      .then((account) => {
+        account.balance -= (this.amount * dx);
+        return account.save();
+      })
+    )
+  }
+
+  return Promise.all(promises);
+}
+
+Transaction.methods.revert = function() {
+  return this.apply(-1);
+}
+
+module.exports = mongoose.model('Transaction', Transaction)
 module.export = {
   transactionTypes
 }

@@ -4,7 +4,7 @@ import uuid from 'uuid/v4';
 
 import Transaction from './Transaction';
 
-import {remove, restore} from '../../actions/transactions';
+import {removeTransaction, restore} from '../../actions/transactions';
 
 import Button from 'material-ui/Button';
 import {add, hide} from '../../actions/flashes';
@@ -32,27 +32,27 @@ const stateToProps = state => ({
 
 const dispatchToProps = dispatch => ({
   removeTransaction(id) {
-    dispatch(remove(id));
+    dispatch(removeTransaction(id));
     
-    const flashId = uuid();
-    dispatch(add({
-      id: flashId,
-      open: true,
-      message: 'transaction has been deleted',
-      hideAfter: 2000,
-      action: (
-        <Button 
-          onClick={() => { 
-            dispatch(restore(id));
-            dispatch(hide(flashId));
-          }}
-          color="accent"
-          raised
-        >
-          UNDO
-        </Button>
-      )
-    }))
+    // const flashId = uuid();
+    // dispatch(add({
+    //   id: flashId,
+    //   open: true,
+    //   message: 'transaction has been deleted',
+    //   hideAfter: 2000,
+    //   action: (
+    //     <Button 
+    //       onClick={() => { 
+    //         dispatch(restore(id));
+    //         dispatch(hide(flashId));
+    //       }}
+    //       color="accent"
+    //       raised
+    //     >
+    //       UNDO
+    //     </Button>
+    //   )
+    // }))
   }
 })
 

@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 
 import {
   ACCOUNTS_ADD,
+  ACCOUNTS_SET,
   ACCOUNTS_UPDATE,
   ACCOUNTS_REMOVE
 } from '../actions/accounts';
@@ -11,6 +12,9 @@ const defaultState = [];
 
 export default (prevState = defaultState, action) => {
   switch(action.type){
+
+    case ACCOUNTS_SET:
+      return action.items;
 
     case ACCOUNTS_ADD:
       return prevState.concat(action.items);

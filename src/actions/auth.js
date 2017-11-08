@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { fetchData } from './app';
+import { fetchData, set } from './app';
 
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
@@ -33,6 +33,7 @@ export const validateToken = () => dispatch => {
 
   if (!token) {
     dispatch(logout());
+    return;
   }
 
   return axios.post('http://localhost:1212/auth/validateToken', {token})
@@ -41,7 +42,9 @@ export const validateToken = () => dispatch => {
       if (data.success) {
         localStorage.setItem('authtoken', data.token);
         axios.defaults.headers.common['x-access-token'] = data.token;
-        dispatch(login());
+        dispatch(login({
+          email: 'no email'
+        }));
         dispatch(fetchData());
       } else {
         dispatch(logout());
@@ -58,10 +61,12 @@ export const login = (data) => {
   }
 }
 
-export const logout = () => {
+export const logout = () => dispatch => {
   localStorage.removeItem('authtoken');
 
-  return {
+  dispatch(set('ready', false));
+
+  dispatch({
     type: LOGOUT
-  }
+  });
 }

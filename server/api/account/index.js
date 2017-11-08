@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const accountModel = require('./model');
+const accountModel = require('mongoose').model('Account');
 const controller = require('../../utils/crud')(accountModel);
 
 router.param('id', controller.preloadById);

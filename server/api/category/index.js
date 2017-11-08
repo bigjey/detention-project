@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const categoryModel = require('./model');
+const categoryModel = require('mongoose').model('Category');
 const controller = require('../../utils/crud')(categoryModel);
 
 router.param('id', controller.preloadById);

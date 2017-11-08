@@ -49,9 +49,9 @@ class App extends Component {
   }
 
   render() {
-    let { showTransactionModal, loggedin, ready } = this.props;
+    let { showTransactionModal, loggedin, ready, validatingToken } = this.props;
 
-    if (loggedin && !ready) return <CircularProgress size={250} color={'accent'} />;
+    if (validatingToken || loggedin && !ready) return <CircularProgress size={250} color={'accent'} />;
 
     return (
 
@@ -133,6 +133,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
+    validatingToken: state.auth.validatingToken,
     loggedin: state.auth.loggedIn,
     ready: state.app.ready,
     showTransactionModal: state.app.showTransactionModal

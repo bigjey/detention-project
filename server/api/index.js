@@ -2,12 +2,12 @@ require('../models');
 
 const router = require('express').Router();
 
+const accountRouter = require('./account');
 const categoryRouter = require('./category');
 const transactionRouter = require('./transaction');
-const accountRouter = require('./account');
 
+router.use('/account', accountRouter);
 router.use('/category', categoryRouter);
 router.use('/transaction', transactionRouter);
-router.use('/account', accountRouter);
 
 module.exports = router;
