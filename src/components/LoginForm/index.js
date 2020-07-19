@@ -8,38 +8,40 @@ class LoginForm extends Component {
   state = {
     fields: {
       email: '',
-      password: ''
+      password: '',
     },
-    errors: {}
-  }
+    errors: {},
+  };
 
-  inputHandler = ({target}) => {
-    this.setState({
-      fields: {
-        ...this.state.fields,
-        [target.name]: target.value
-      }
-    }, () => this.validateField(target.name, true))
-  }
+  inputHandler = ({ target }) => {
+    this.setState(
+      {
+        fields: {
+          ...this.state.fields,
+          [target.name]: target.value,
+        },
+      },
+      () => this.validateField(target.name, true)
+    );
+  };
 
-  fieldBlurHandler = ({target}) => {
+  fieldBlurHandler = ({ target }) => {
     this.validateField(target.name, true);
-  }
+  };
 
   submitHandler = (e) => {
     e.preventDefault();
 
     if (this.valid()) {
-      this.props.login(this.state.fields)
-        .then(({success, err}) => {
-          if (success) {
-            // this.props.history.push('/login');
-          } else {
-            this.setState({errors: err})
-          }
-        })
+      this.props.login(this.state.fields).then(({ success, err }) => {
+        if (success) {
+          // this.props.history.push('/login');
+        } else {
+          this.setState({ errors: err });
+        }
+      });
     }
-  }
+  };
 
   validateField = (field, updateState = false) => {
     const value = this.state.fields[field];
@@ -56,34 +58,37 @@ class LoginForm extends Component {
       this.setState({
         errors: {
           ...this.state.errors,
-          [field]: message
-        }
-      })
+          [field]: message,
+        },
+      });
     }
-      
+
     return message;
-  }
+  };
 
   valid = () => {
-    const {name, balance} = this.state.fields;
+    const { name, balance } = this.state.fields;
     let valid = true;
     let errors = {};
 
-    this.setState({errors});
+    this.setState({ errors });
 
     return valid;
-  }
+  };
 
-  render () {
-    const { fields: {email, password, passwordRepeat}, errors } = this.state
+  render() {
+    const {
+      fields: { email, password, passwordRepeat },
+      errors,
+    } = this.state;
 
     return (
       <div className="login-form">
         <form className="form" onSubmit={this.submitHandler}>
-          <small><Link to="/register">register</Link></small>
-          <div className="form-title">
-            Log In
-          </div>
+          <small>
+            <Link to="/register">register</Link>
+          </small>
+          <div className="form-title">Log In</div>
           <div className="form-group">
             <div className="input-label">Email</div>
             <input
@@ -119,16 +124,14 @@ class LoginForm extends Component {
           </div>
         </form>
       </div>
-
-    )
+    );
   }
-
 }
 
 const dispatchToPros = (dispatch) => ({
   login(data) {
     return dispatch(authenticate(data));
-  }
-})
+  },
+});
 
 export default withRouter(connect(null, dispatchToPros)(LoginForm));

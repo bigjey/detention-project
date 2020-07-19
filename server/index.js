@@ -10,7 +10,7 @@ const app = express();
 app.set('secret', 'secretWord');
 const PORT = 1212;
 
-mongoose.connect('mongodb://admin:admin@ds113455.mlab.com:13455/detention-db', { useMongoClient: true });
+mongoose.connect('mongodb://admin:admin@ds113455.mlab.com:13455/detention-db');
 mongoose.Promise = global.Promise;
 
 app.use(cors());
@@ -25,4 +25,4 @@ app.use('/api', checkAuthorization, api);
 
 app.listen(PORT, () => {
   console.log(`open fucking http://localhost:${PORT}`);
-})
+});

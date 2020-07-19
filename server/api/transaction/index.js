@@ -3,11 +3,10 @@ const controller = require('./controller');
 
 router.param('id', controller.preloadById);
 
-router.route('/')
-  .post(controller.create)
-  .get(controller.getAll);
+router.route('/').post(controller.create).get(controller.getAll);
 
-router.route('/:id')
+router
+  .route('/:id')
   .get(controller.getOne)
   .put(controller.updateOne)
   .delete(controller.deleteOne);

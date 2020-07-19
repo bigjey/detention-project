@@ -5,7 +5,8 @@
   outline: none;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   font: normal 300 14px 'Roboto', Arial, sans-serif;
   color: #333;
@@ -45,20 +46,20 @@ a {
 }
 
 .color--income {
-  color: #4CAF50;
+  color: #4caf50;
 }
 .color--expense {
-  color: #F44336;
+  color: #f44336;
 }
 .color--transfer {
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .btn {
   cursor: pointer;
   display: inline-block;
   border: none;
-  background: #4CAF50;
+  background: #4caf50;
   padding: 8px 15px;
   font-weight: 400;
   font-size: 16px;
@@ -79,15 +80,14 @@ a {
   background: #e81111;
 }
 .btn:hover {
-  background: #2E7D32;
+  background: #2e7d32;
 }
-
 
 .form {
   padding: 30px;
   background: #f6f6f6;
   border: 1px solid #ddd;
-  box-shadow: 0 5px 30px rgba(0,0,0,.1);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 .form-title {
   font-size: 30px;
@@ -100,11 +100,11 @@ a {
   padding-bottom: 5px;
   font-size: 14px;
 }
-.form input[type=text],
-.form input[type=password],
-.form input[type=email],
+.form input[type='text'],
+.form input[type='password'],
+.form input[type='email'],
 .form select,
-.form input[type=number] {
+.form input[type='number'] {
   display: block;
   width: 100%;
   padding: 7px 9px;
@@ -113,16 +113,16 @@ a {
   border-radius: 3px;
 }
 
-.form input[type=text]:focus,
-.form input[type=password]:focus,
-.form input[type=email]:focus,
+.form input[type='text']:focus,
+.form input[type='password']:focus,
+.form input[type='email']:focus,
 .form select:focus,
-.form input[type=number]:focus {
-  box-shadow: 0 0 5px #AEEA00;
+.form input[type='number']:focus {
+  box-shadow: 0 0 5px #aeea00;
 }
 
 .form .input-error {
   padding-top: 3px;
   font-size: 12px;
-  color: #F44336;
+  color: #f44336;
 }

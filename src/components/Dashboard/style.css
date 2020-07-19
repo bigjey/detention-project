@@ -12,7 +12,7 @@
   display: block;
 }
 .dashboard-accounts--item.active {
-  border-right: 3px solid #81C784;
+  border-right: 3px solid #81c784;
 }
 .dashboard-accounts--item + .dashboard-accounts--item {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
@@ -34,7 +34,6 @@
   margin-left: 5px;
   font-weight: 300;
 }
-
 
 .dashboard-transactions {
   flex: 1 1 auto;
@@ -82,5 +81,5 @@
 
 .dashboard-transactions--item:hover .dashboard-transactions--item-actions {
   opacity: 1;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }

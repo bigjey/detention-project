@@ -1,27 +1,30 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 
-import {CATEGORY_FORM_LOADER, CATEGORY_FORM_ERROR} from '../actions/categories';
+import {
+  CATEGORY_FORM_LOADER,
+  CATEGORY_FORM_ERROR,
+} from '../actions/categories';
 
 const defaultState = {
   loading: false,
-  errors: null
+  errors: null,
 };
 
 export default (prevState = defaultState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case CATEGORY_FORM_LOADER:
       return {
         ...prevState,
-        loading: action.loading
-      }
+        loading: action.loading,
+      };
 
     case CATEGORY_FORM_ERROR:
       return {
         ...prevState,
-        errors: action.errors
-      }
+        errors: action.errors,
+      };
 
     default:
       return prevState;
   }
-}
+};

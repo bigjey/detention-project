@@ -1,27 +1,27 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 
-import {FLASHES_ADD, FLASHES_REMOVE, FLASHES_HIDE} from '../actions/flashes';
+import { FLASHES_ADD, FLASHES_REMOVE, FLASHES_HIDE } from '../actions/flashes';
 
 const defaultState = [];
 
 export default (prevState = defaultState, action) => {
-  switch(action.type){
+  switch (action.type) {
     case FLASHES_ADD:
       return prevState.concat(action.flash);
 
     case FLASHES_REMOVE:
-      var {id} = action;
-      return prevState.filter(flash => flash.id !== id);
+      var { id } = action;
+      return prevState.filter((flash) => flash.id !== id);
 
     case FLASHES_HIDE:
-      var {id} = action;
-      return prevState.map(flash => {
+      var { id } = action;
+      return prevState.map((flash) => {
         if (flash.id === id) {
           return {
             ...flash,
-            open: false
-          }
-        };
+            open: false,
+          };
+        }
 
         return flash;
       });
@@ -29,4 +29,4 @@ export default (prevState = defaultState, action) => {
     default:
       return prevState;
   }
-}
+};

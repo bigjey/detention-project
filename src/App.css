@@ -5,10 +5,9 @@
   max-height: 768px;
   height: 100%;
   width: 100%;
-  box-shadow: 0 10px 200px 20px rgba(0,0,0,.3);
+  box-shadow: 0 10px 200px 20px rgba(0, 0, 0, 0.3);
   border-radius: 5px 5px 0 0;
 }
-
 
 .app--loading {
   font-size: 50px;
@@ -16,7 +15,7 @@
 
 .app-header {
   flex: 0 0 auto;
-  background: #4CAF50;
+  background: #4caf50;
   color: #fff;
   font-size: 30px;
   font-weight: 100;
@@ -44,7 +43,7 @@
   height: 100%;
   align-content: center;
   justify-content: center;
-  border-left: 1px solid #2E7D32;
+  border-left: 1px solid #2e7d32;
 }
 
 .app-header-nav--link {
@@ -52,7 +51,7 @@
   align-content: center;
   justify-content: center;
   padding: 10px 20px;
-  background: #388E3C;
+  background: #388e3c;
   color: #fff;
   cursor: pointer;
 }
@@ -61,12 +60,12 @@
   align-self: center;
 }
 .app-header-nav--link:hover {
-  background: #43A047;
+  background: #43a047;
 }
 
 .app-header--user {
   flex: 0 1 auto;
-  background: #388E3C;
+  background: #388e3c;
   padding: 10px 20px;
   border-radius: 0 5px 0 0;
   font-size: 16px;
@@ -76,22 +75,21 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color .1s ease;
-  border-left: 1px solid #2E7D32;
+  transition: background-color 0.1s ease;
+  border-left: 1px solid #2e7d32;
 }
 .app-header--user:hover {
-  background-color: #43A047;
+  background-color: #43a047;
 }
 .app-header--user svg {
-  transition: transform .2s ease;
+  transition: transform 0.2s ease;
 }
 .app-header--user:hover svg {
-  transform: translateX(5px);  
+  transform: translateX(5px);
 }
 .app-header--user span {
   padding-right: 10px;
 }
-
 
 .app-body {
   flex: 1 1 auto;
@@ -102,7 +100,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .app-nav {
   height: 100%;
@@ -116,13 +113,12 @@
 
 @media (max-width: 768px) {
   .app-nav {
-    width: auto;    
+    width: auto;
   }
   .app-nav--item-label {
     display: none;
   }
 }
-
 
 .app-nav--item {
   display: flex;
@@ -136,12 +132,12 @@
 }
 
 .app-nav--item:hover {
-  background-color: #C8E6C9;
+  background-color: #c8e6c9;
 }
 .app-nav--item__active,
 .app-nav--item__active:hover {
-  background-color: #A5D6A7;
-  border-color: #4CAF50;
+  background-color: #a5d6a7;
+  border-color: #4caf50;
 }
 
 .app-nav--item-icon {
@@ -151,7 +147,6 @@
   padding-bottom: 2px;
   margin-left: 10px;
 }
-
 
 .app-content {
   height: 100%;
@@ -164,48 +159,45 @@
   height: 100%;
 }
 
-
 .content-appear {
   opacity: 0;
-  transform: translateY(10px);  
+  transform: translateY(10px);
 }
 .content-appear-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity .2s ease, transform .2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .content-enter {
   transform: translateY(50px);
 }
 .content-enter-active {
-  transition: transform .2s ease;
+  transition: transform 0.2s ease;
 }
 
 .content-leave {
   opacity: 1;
-  transform: translateY(0px);  
+  transform: translateY(0px);
 }
 .content-leave-active {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity .2s ease, transform .2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-
-
 
 .itemanimation-enter {
   transform: translateX(-100px);
 }
 .itemanimation-enter-active {
   transform: translateX(0);
-  transition: transform .3s ease;
+  transition: transform 0.3s ease;
 }
 
 .itemanimation-leave {
-  transform: translateX(0);  
+  transform: translateX(0);
 }
-.itemanimation-leave-active {  
+.itemanimation-leave-active {
   transform: translateX(100px);
-  transition: transform .3s ease;
+  transition: transform 0.3s ease;
 }

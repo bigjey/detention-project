@@ -1,17 +1,16 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 
 import {
   TRANSACTIONS_ADD,
   TRANSACTIONS_SET,
   TRANSACTIONS_DELETE,
-  TRANSACTIONS_RESTORE
+  TRANSACTIONS_RESTORE,
 } from '../actions/transactions';
 
-const defaultState = []
+const defaultState = [];
 
 export default (prevState = defaultState, action) => {
-  switch(action.type){
-
+  switch (action.type) {
     case TRANSACTIONS_SET:
       return action.items;
 
@@ -19,22 +18,23 @@ export default (prevState = defaultState, action) => {
       return prevState.concat(action.items);
 
     case TRANSACTIONS_DELETE:
-      const {id} = action;
-      return prevState.filter((el) => el._id !== id)
+      const { id } = action;
+      return prevState.filter((el) => el._id !== id);
 
-    case TRANSACTIONS_RESTORE:
-      {const {id} = action;
+    case TRANSACTIONS_RESTORE: {
+      const { id } = action;
       return prevState.map((el) => {
-        if(el.id === id) {
+        if (el.id === id) {
           return {
             ...el,
-            deleted: false
-          }
+            deleted: false,
+          };
         }
-        return el
-      })}
+        return el;
+      });
+    }
 
     default:
       return prevState;
   }
-}
+};

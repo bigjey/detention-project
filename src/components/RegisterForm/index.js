@@ -9,39 +9,43 @@ class RegisterForm extends Component {
     fields: {
       email: '',
       password: '',
-      passwordRepeat: ''
+      passwordRepeat: '',
     },
-    errors: {}
-  }
+    errors: {},
+  };
 
-  inputHandler = ({target}) => {
-    this.setState({
-      fields: {
-        ...this.state.fields,
-        [target.name]: target.value
-      }
-    }, () => this.validateField(target.name, true))
-  }
+  inputHandler = ({ target }) => {
+    this.setState(
+      {
+        fields: {
+          ...this.state.fields,
+          [target.name]: target.value,
+        },
+      },
+      () => this.validateField(target.name, true)
+    );
+  };
 
-  fieldBlurHandler = ({target}) => {
+  fieldBlurHandler = ({ target }) => {
     this.validateField(target.name, true);
-  }
+  };
 
   submitHandler = (e) => {
     e.preventDefault();
 
     if (this.valid()) {
-      this.props.register(this.state.fields)
-        .then(({success, err}) => {
+      this.props
+        .register(this.state.fields)
+        .then(({ success, err }) => {
           if (success) {
             this.props.history.push('/login');
           } else {
-            this.setState({errors: err})
+            this.setState({ errors: err });
           }
         })
-        .catch(e => console.log(e));
+        .catch((e) => console.log(e));
     }
-  }
+  };
 
   validateField = (field, updateState = false) => {
     const value = this.state.fields[field];
@@ -58,42 +62,45 @@ class RegisterForm extends Component {
       this.setState({
         errors: {
           ...this.state.errors,
-          [field]: message
-        }
-      })
+          [field]: message,
+        },
+      });
     }
-      
+
     return message;
-  }
+  };
 
   valid = () => {
-    const {name, balance} = this.state.fields;
+    const { name, balance } = this.state.fields;
     let valid = true;
     let errors = {};
 
-    Object.keys(this.state.fields).forEach(field => {
+    Object.keys(this.state.fields).forEach((field) => {
       let error = this.validateField(field);
       if (error) {
         errors[field] = error;
         valid = false;
       }
-    })
+    });
 
-    this.setState({errors});
+    this.setState({ errors });
 
     return valid;
-  }
+  };
 
-  render () {
-    const { fields: {email, password, passwordRepeat}, errors } = this.state
+  render() {
+    const {
+      fields: { email, password, passwordRepeat },
+      errors,
+    } = this.state;
 
     return (
       <div className="login-form">
         <form className="form" onSubmit={this.submitHandler}>
-          <small><Link to="/login">Login</Link></small>
-          <div className="form-title">
-            Register
-          </div>
+          <small>
+            <Link to="/login">Login</Link>
+          </small>
+          <div className="form-title">Register</div>
           <div className="form-group">
             <div className="input-label">Email</div>
             <input
@@ -143,16 +150,14 @@ class RegisterForm extends Component {
           </div>
         </form>
       </div>
-
-    )
+    );
   }
-
 }
 
 const dispatchToPros = (dispatch) => ({
   register(data) {
     return dispatch(register(data));
-  }
-})
+  },
+});
 
 export default withRouter(connect(null, dispatchToPros)(RegisterForm));

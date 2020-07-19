@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import uuid from "uuid/v4";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import moment from 'moment';
 
-import { create } from "../../actions/transactions";
-import { add } from "../../actions/flashes";
+import { create } from '../../actions/transactions';
+import { add } from '../../actions/flashes';
 
 class TransactionForm extends Component {
   state = {
@@ -14,11 +14,11 @@ class TransactionForm extends Component {
       amount: 0,
       fromAccount: null,
       toAccount: null,
-      description: "",
-      created: Date.now()
+      description: '',
+      created: Date.now(),
     },
     errors: {},
-    completed: false
+    completed: false,
   };
 
   componentWillMount() {
@@ -27,25 +27,23 @@ class TransactionForm extends Component {
       ...this.state,
       fields: {
         ...this.state.fields,
-        type: this.props.type
-      }
+        type: this.props.type,
+      },
     };
 
-    if(type !== 'income') {
-      newState.fields.fromAccount = this.props.accounts[0]._id 
+    if (type !== 'income' && this.props.accounts.length) {
+      newState.fields.fromAccount = this.props.accounts[0]._id;
     }
 
-    if(type !== 'expense') {
-      newState.fields.toAccount = this.props.accounts[0]._id
+    if (type !== 'expense' && this.props.accounts.length) {
+      newState.fields.toAccount = this.props.accounts[0]._id;
     }
 
-    if(type !== 'transfer') {
-      newState.fields.category = this.props.categories[0]._id 
+    if (type !== 'transfer' && this.props.categories.length) {
+      newState.fields.category = this.props.categories[0]._id;
     }
 
-    this.setState(
-      newState
-    );
+    this.setState(newState);
   }
 
   inputHandler = ({ target }) => {
@@ -54,8 +52,8 @@ class TransactionForm extends Component {
     this.setState({
       fields: {
         ...this.state.fields,
-        [name]: value
-      }
+        [name]: value,
+      },
     });
   };
 
@@ -63,33 +61,31 @@ class TransactionForm extends Component {
     this.validateField(target.name, true);
   };
 
-  submitHandler = e => {
+  submitHandler = (e) => {
     e.preventDefault();
-    
+
     if (this.props.type === 'transfer') {
-
       if (this.state.fields.fromAccount === this.state.fields.toAccount) {
-
         this.setState({
           ...this.state,
-          errors: {toAccount: "you can't transfer from different accounts"}
-        })  
-        return 
+          errors: { toAccount: "you can't transfer from different accounts" },
+        });
+        return;
       } else {
         this.setState({
           ...this.state,
-          errors: {}
-        })
+          errors: {},
+        });
       }
-    } 
+    }
 
     this.props
       .createTransaction(this.state.fields)
       .then(({ success, item }) => {
         if (success) {
-          this.props.addFlash("Transaction has been created");
+          this.props.addFlash('Transaction has been created');
         } else {
-          this.props.addFlash("Something went wrong");
+          this.props.addFlash('Something went wrong');
         }
 
         if (this.props.hideModal) {
@@ -102,9 +98,16 @@ class TransactionForm extends Component {
     const { type } = this.props;
 
     const {
-      fields: { category, amount, toAccount, fromAccount, description, created },
+      fields: {
+        category,
+        amount,
+        toAccount,
+        fromAccount,
+        description,
+        created,
+      },
       errors,
-      completed
+      completed,
     } = this.state;
 
     return (
@@ -119,13 +122,12 @@ class TransactionForm extends Component {
             value={amount}
             onChange={this.inputHandler}
           />
-          {errors["amount"] && (
-            <div className="input-error">{errors["amount"]}</div>
+          {errors['amount'] && (
+            <div className="input-error">{errors['amount']}</div>
           )}
         </div>
 
-        { type !== "income" && (
-
+        {type !== 'income' && (
           <div className="form-group">
             <div className="input-label">from account</div>
             <select
@@ -133,17 +135,17 @@ class TransactionForm extends Component {
               value={fromAccount}
               onChange={this.inputHandler}
             >
-              {this.props.accounts.map(a => (
+              {this.props.accounts.map((a) => (
                 <option value={a._id}>{a.name}</option>
               ))}
             </select>
-            {errors["fromAccount"] && (
-              <div className="input-error">{errors["fromAccount"]}</div>
+            {errors['fromAccount'] && (
+              <div className="input-error">{errors['fromAccount']}</div>
             )}
           </div>
         )}
 
-        {type !== "expense" && (
+        {type !== 'expense' && (
           <div className="form-group">
             <div className="input-label">to account</div>
             <select
@@ -151,17 +153,17 @@ class TransactionForm extends Component {
               value={toAccount}
               onChange={this.inputHandler}
             >
-              {this.props.accounts.map(a => (
+              {this.props.accounts.map((a) => (
                 <option value={a._id}>{a.name}</option>
               ))}
             </select>
-            {errors["toAccount"] && (
-              <div className="input-error">{errors["toAccount"]}</div>
+            {errors['toAccount'] && (
+              <div className="input-error">{errors['toAccount']}</div>
             )}
           </div>
         )}
 
-        {type !== "transfer" && (
+        {type !== 'transfer' && (
           <div className="form-group">
             <div className="input-label">category</div>
             <select
@@ -169,12 +171,12 @@ class TransactionForm extends Component {
               value={category}
               onChange={this.inputHandler}
             >
-              {this.props.categories.map(c => (
+              {this.props.categories.map((c) => (
                 <option value={c._id}>{c.name}</option>
               ))}
             </select>
-            {errors["category"] && (
-              <div className="input-error">{errors["category"]}</div>
+            {errors['category'] && (
+              <div className="input-error">{errors['category']}</div>
             )}
           </div>
         )}
@@ -187,8 +189,8 @@ class TransactionForm extends Component {
             value={description}
             onChange={this.inputHandler}
           />
-          {errors["description"] && (
-            <div className="input-error">{errors["description"]}</div>
+          {errors['description'] && (
+            <div className="input-error">{errors['description']}</div>
           )}
         </div>
 
@@ -200,8 +202,8 @@ class TransactionForm extends Component {
             value={moment(created).format('YYYY-MM-DD')}
             onChange={this.inputHandler}
           />
-          {errors["created"] && (
-            <div className="input-error">{errors["created"]}</div>
+          {errors['created'] && (
+            <div className="input-error">{errors['created']}</div>
           )}
         </div>
 
@@ -226,11 +228,11 @@ class TransactionForm extends Component {
 const stateToProps = (state, ownProps) => ({
   accounts: state.accounts,
   categories: state.categories.filter(
-    c => !c.deleted && c.type === ownProps.type
-  )
+    (c) => !c.deleted && c.type === ownProps.type
+  ),
 });
 
-const dispatchToProps = dispatch => ({
+const dispatchToProps = (dispatch) => ({
   createTransaction(data) {
     return dispatch(create(data));
   },
@@ -240,10 +242,10 @@ const dispatchToProps = dispatch => ({
         id: uuid(),
         open: true,
         message,
-        hideAfter: 5000
+        hideAfter: 5000,
       })
     );
-  }
+  },
 });
 
 export default connect(stateToProps, dispatchToProps)(TransactionForm);

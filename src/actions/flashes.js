@@ -4,13 +4,13 @@ export const FLASHES_HIDE = 'FLASHES_HIDE';
 
 export const add = (flash) => ({
   type: FLASHES_ADD,
-  flash
-})
+  flash,
+});
 export const hide = (id) => ({
   type: FLASHES_HIDE,
-  id
-})
+  id,
+});
 export const remove = (id) => ({
   type: FLASHES_REMOVE,
-  id
-})
+  id,
+});
